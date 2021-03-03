@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>river-service</artifactId>
+        <groupId>com.river.springcloud</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.river.springcloud</groupId>
+    <artifactId>river-system</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <description>系统管理模块</description>
+
+    <dependencies>
+
+        <!--共同模块-->
+        <dependency>
+            <groupId>com.river.springcloud</groupId>
+            <artifactId>river-common-sentinel</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.river.springcloud</groupId>
+            <artifactId>river-common-security</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.river.springcloud</groupId>
+            <artifactId>river-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!--共同模块-->
+
+        <!-- commons dependency -->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>3.6</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

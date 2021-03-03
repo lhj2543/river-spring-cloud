@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.river.system.mapper.SysItemMapper">
+
+    <!-- SYS_ITEM 信息查询语句 -->
+    <select id="findSysItemByCategoryName" resultType="com.river.api.dto.system.SysItemDto">
+		SELECT
+		*,
+		'${categoryName}' as categoryName
+
+		from sys_item i
+
+		where 1=1
+		and exists (
+		SELECT sid from sys_item_category ic
+		where ic.sid = i.category_id and ic.category_name=#{categoryName}
+		and ic.`status`='1'
+		)
+		and i.`status`='1'
+		ORDER BY i.sort_key asc
+	</select>
+
+    <!-- SYS_ITEM 信息查询语句 -->
+    <select id="findSysItemByCategoryNames" resultType="com.river.api.dto.system.SysItemDto">
+        SELECT
+        i.*,
+        ic.category_name
+        from sys_item_category ic
+        INNER JOIN sys_item i
+        on i.category_id=ic.sid
+        and i.`status`='1' and ic.`status`='1'
+        <where>
+            <if test="categoryNames!=null and categoryNames.size>0">
+                ic.category_name in
+                <foreach collection="categoryNames" open="(" separator="," close=")"  item="value">
+                    #{value}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY ic.sort_key, i.sort_key asc
+    </select>
+
+</mapper>

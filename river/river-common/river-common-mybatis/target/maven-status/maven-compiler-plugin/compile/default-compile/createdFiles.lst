@@ -1,0 +1,4 @@
+com\river\common\mybatis\model\DynamicTable.class
+com\river\common\mybatis\util\MyBatisUtils.class
+com\river\common\mybatis\model\Pojo.class
+com\river\common\mybatis\config\MybatisPlusConfig.class

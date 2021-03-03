@@ -1,0 +1,75 @@
+NACOS_HOST: localhost
+
+server:
+  port: 8160
+
+spring:
+  application:
+    name: river-spring
+  profiles:
+    active: dev #激活环境
+  datasource:
+    #SpringBoot默认可以支持数据源类型 org.apache.tomcat.jdbc.pool.DataSource、HikariDataSource、BasicDataSource
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connectionTimeout: 60000
+      idleTimeout: 60000
+      validation-timeout: 3000
+      maxLifetime: 60000
+      loginTimeout: 5
+      maximumPoolSize: 60
+      minimumIdle: 10
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/river_system?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+  #上传文件限制 如果是想要不限制文件上传的大小，那么就把两个值都设置为-1
+  servlet:
+    multipart:
+      max-file-size: 100MB #设置单个文件的大小
+      max-request-size: 500MB #设置单次请求的文件的总大小
+
+  # Spring redis 相关
+  redis:
+    password: #没有密码为空
+    host: 127.0.0.1
+    port: 6379
+  lettuce: #redis lecttuce 缓存连接池
+    pool:
+      max-active: 20  #最大连接数，负值表示没有限制，默认8
+      max-wait: -1    #最大阻塞等待时间，负值表示没限制，默认-1
+      max-idle: 8     #最大空闲连接，默认8
+      min-idle: 0     #最小空闲连接，默认0
+
+  #spring:
+  jackson: #返回json的全局时间格式
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+# mybaits-plus配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml #放在resource目录 classpath:/mapper/*Mapper.xml
+  global-config:
+    banner: false # 关闭MP3.0自带的banner
+    db-config:
+      id-type: ASSIGN_ID #主键生成策略 默认ASSIGN_ID （雪花算法） ,AUTO （自动增长策略）,Input（自定义输入策略）,ASSIGN_UUID（不含中划线的UUID）,NONE（无状态）
+      table-underline: true # 默认数据库表下划线命名
+      logic-delete-value: 1 #配置逻辑删除字段为1是删除
+      logic-not-delete-value: 0 #配置逻辑删除字段为0是未删除
+      select-strategy: not_empty # '' 空字符串不带如查询条件
+      update-strategy: ignored #字段更新插入策略  ignored:"忽略判断",not_null:"非 NULL 判断"),not_empty:"非空判断"
+  configuration:
+    map-underscore-to-camel-case: true #来开启驼峰功能
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #mybatis-plus配置控制台打印完整带参数SQL语句
+
+
+wweixin:
+  open:
+    # 微信开放平台 appid
+    appId: wxed9954c01bb89b47
+    # 微信开放平台 appsecret
+    appSecret: a7482517235173ddb4083788de60b90e
+    # 微信开放平台 重定向url（guli.shop需要在微信开放平台配置）
+    redirectUri: http://guli.shop/api/ucenter/wx/callback8160
+
+

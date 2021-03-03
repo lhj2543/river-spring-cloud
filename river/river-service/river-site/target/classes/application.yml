@@ -1,0 +1,10 @@
+#百度编辑器附件配置
+ueditor:
+  attach:
+    url: /attach #附件访问路径
+    path: D:/lhj_ftp/lhj-blog #附件存储路径
+  congif:
+    path: /ueditor_config.json #编辑器配置文件路径
+
+
+

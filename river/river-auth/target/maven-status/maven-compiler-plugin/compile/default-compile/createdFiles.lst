@@ -1,0 +1,12 @@
+com\river\auth\config\WebSecurityConfigurer.class
+com\river\auth\endpoint\RiverTokenEndpoint.class
+com\river\auth\handler\AbstractAuthenticationFailureEvenHandler.class
+com\river\auth\handler\RiverAuthenticationSuccessHandler.class
+com\river\auth\authApplication.class
+com\river\auth\handler\AbstractAuthenticationSuccessEventHandler.class
+com\river\auth\handler\RiverAuthenticationFailureEvenHandler.class
+com\river\auth\config\AuthorizationServerConfig.class
+com\river\auth\service\RiverClientDetailsService.class
+com\river\auth\handler\FormAuthenticationFailureHandler.class
+com\river\auth\handler\RiverAuthenticationSuccessEventHandler.class
+com\river\auth\service\RiverUserDetailsServiceImpl.class

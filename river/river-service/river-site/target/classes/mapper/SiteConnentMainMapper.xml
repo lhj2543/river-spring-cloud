@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.river.site.mapper.SiteConnentMainMapper">
+
+
+    <select id="getDetail" resultType="com.river.api.dto.site.SiteConnentMainDto" >
+        SELECT
+        t1.*
+        ,t2.bodys
+        ,t2.sid connectId
+        FROM site_connent_main t1
+        LEFT JOIN site_connent t2 on t1.sid = t2.target_id
+        where t1.sid = #{sid}
+    </select>
+
+    <delete id="relationDelete" >
+        DELETE site_connent_main,site_connent
+        from site_connent_main
+        LEFT JOIN site_connent ON site_connent_main.sid=site_connent.target_id
+        WHERE site_connent_main.sid=#{sid}
+    </delete>
+
+</mapper>

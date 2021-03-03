@@ -1,0 +1,32 @@
+NACOS_HOST: 192.168.0.101
+NACOS_PORT: 80
+NACOS_NAMESPACE: river_prod
+NACOS_GROUP: dev_group
+
+server:
+  port: 5000
+
+spring:
+  application:
+    name: river-monitor
+  profiles:
+    active: dev #当前激活环境
+  cloud:
+    nacos:
+      discovery: #nacos注册中心
+        server-addr: ${NACOS_HOST:localhost}:${NACOS_PORT:8848}
+        namespace: ${NACOS_NAMESPACE:public}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+      config: #nacos配置管理
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        namespace: ${NACOS_NAMESPACE:public}
+        group: ${NACOS_GROUP:DEFAULT_GROUP}
+        shared-configs[0]: #公共配置文件
+          data-id: application-common-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          namespace: ${NACOS_NAMESPACE:public}
+          group: ${NACOS_GROUP:DEFAULT_GROUP}
+          refresh: true
+
+
+

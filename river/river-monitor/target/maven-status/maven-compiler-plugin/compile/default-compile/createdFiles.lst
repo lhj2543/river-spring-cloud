@@ -1,0 +1,3 @@
+com\river\monitor\config\JacksonConfig.class
+com\river\monitor\config\WebSecurityConfigurer.class
+com\river\monitor\MonitorApplication.class

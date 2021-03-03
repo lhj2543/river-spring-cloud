@@ -1,0 +1,39 @@
+version: '2'
+services:
+  river-auth:
+    image: "river/river-auth:1.0-SNAPSHOT"
+    container_name: river-auth
+    hostname: river-auth
+    restart: always
+    ports:
+      - 3000:3000
+  river-gateway:
+    image: "river/river-gateway:1.0-SNAPSHOT"
+    container_name: river-gateway
+    hostname: river-gateway
+    restart: always
+    ports:
+      - 9999:9999
+  river-site:
+    image: "river/river-site:1.0-SNAPSHOT"
+    container_name: river-site
+    hostname: river-site
+    restart: always
+    ports:
+      - 9997:9997
+    volumes:
+      - /root/river/relyOn/ftp/river/lhj-blog/ueditor/jsp/upload/image:/root/river/relyOn/ftp/river/lhj-blog/ueditor/jsp/upload/image
+  river-system:
+    image: "river/river-system:1.0-SNAPSHOT"
+    container_name: river-system
+    hostname: river-system
+    restart: always
+    ports:
+      - 9998:9998
+  river-monitor:
+    image: "river/river-monitor:1.0-SNAPSHOT"
+    container_name: river-monitor
+    hostname: river-monitor
+    restart: always
+    ports:
+      - 5000:5000

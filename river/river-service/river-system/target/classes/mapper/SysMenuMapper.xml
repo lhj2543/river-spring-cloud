@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.river.system.mapper.SysMenuMapper">
+
+
+    <!-- 获取用户菜单资源 -->
+    <select id="findSysUserMenu" resultType="com.river.api.entity.system.SysMenu">
+        SELECT
+        *
+        from
+        sys_menu m
+
+        <if test="!isAdministrator">
+            INNER JOIN
+            (
+            SELECT
+            DISTINCT menu_id
+            from sys_role_menu rm
+            where rm.role_id in
+            <foreach collection="userRoles" open="(" separator="," close=")"  item="value">
+                #{value.roleId}
+            </foreach>
+            and rm.`status`='1'
+            ) t1
+            on m.sid=t1.menu_id
+        </if>
+
+        where 1=1
+        and m.parent_id != '-1' and `status` ='1'
+
+        <if test="category!=null and category!=''" >
+            and category like CONCAT('%',#{category},'%')
+        </if>
+
+        ORDER BY m.sort_key
+
+    </select>
+
+</mapper>

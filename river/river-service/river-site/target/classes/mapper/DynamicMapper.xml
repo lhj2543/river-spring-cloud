@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.river.site.mapper.DynamicMapper">
+
+
+    <!--statementType： PRESTATEMENT=预编译 ，STATEMENT=非预编译-->
+    <select id="getMaxNumber" resultType="java.math.BigDecimal" statementType="STATEMENT" >
+
+        select
+
+        MAX(${numberColumn})
+
+         from ${tableName} t
+
+        ${where}
+
+    </select>
+
+
+</mapper>

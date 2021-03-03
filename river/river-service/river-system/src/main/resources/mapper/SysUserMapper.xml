@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.river.system.mapper.SysUserMapper">
+
+    <resultMap type="com.river.api.dto.system.SysUserDto" id="sysUserBaseMap">
+        <id column="SID" property="sid" />
+        <result property="userCd" column="user_cd"/>
+        <result property="localeId" column="locale_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userSearchName" column="user_search_name"/>
+        <result property="sex" column="sex"/>
+        <result property="countryCd" column="country_cd"/>
+        <result property="address" column="address"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="email" column="email"/>
+        <result property="status" column="status"/>
+        <result property="sortKey" column="sort_key"/>
+        <result property="notes" column="notes"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateDate" column="update_date"/>
+    </resultMap>
+
+    <resultMap type="com.river.api.dto.system.SysUserDto" id="SysUserResultMap_login" extends="sysUserBaseMap">
+        <!--账户信息-->
+        <result property="password" column="password"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="roleStatus" column="roleStatus"/>
+
+        <collection property="userRoles" column="{userCd=user_cd,roleStatus=roleStatus}" select="findSysUserRoles" >
+
+        </collection>
+    </resultMap>
+
+    <resultMap type="com.river.api.dto.system.SysUserDto" id="SysUserResultMap_Detail" extends="sysUserBaseMap">
+
+        <result property="roleStatus" column="roleStatus"/>
+
+        <!--association  collection 顺序位置不能乱-->
+        <association property="sysAccount" column="user_cd" select="loadSysAccount"  />
+        <collection property="userRoles" column="{userCd=user_cd,roleStatus=roleStatus}" select="findSysUserRoles" />
+
+    </resultMap>
+
+    <!-- ============================DML语句配置=========================================== -->
+
+    <!-- 关联用户角色查询 -->
+    <select id="findSysUserRoles" resultType="com.river.api.dto.system.SysUserRoleDto">
+        SELECT
+        ur.sid as sid,
+        ur.role_id as roleId,
+        ur.user_cd as userCd,r.role_code as roleCode,
+        r.role_name as roleName,
+
+        case
+        when r.`status` = '0'
+        then  r.`status`
+        else ur.`status`
+        end as status
+
+        FROM  sys_user_role ur
+        INNER  JOIN sys_role r ON ur.role_id = r.sid
+
+        <if test="roleStatus != null and roleStatus != ''">
+            and r.status = #{roleStatus} and ur.status = #{roleStatus}
+        </if>
+
+        where ur.user_cd = #{userCd}
+    </select>
+
+    <!-- SYS_USER 用户登录信息查询 -->
+    <select id="findSysUserLogin" resultMap="SysUserResultMap_login">
+        SELECT
+        u.*,
+        acc.password,
+        acc.licence,
+        acc.start_date,
+        acc.end_date,
+        ${roleStatus} as roleStatus
+
+        FROM  SYS_USER u
+        INNER  JOIN  sys_account acc on u.user_cd=acc.user_cd
+        <!-- and acc.licence = '1' -->
+
+        <where>
+            <if test="userCd != null and userCd != ''">
+                and acc.user_cd = #{userCd}
+            </if>
+        </where>
+
+    </select>
+
+    <!-- SYS_USER 详情信息查询语句 -->
+    <select id="findSysUserDetail" resultMap="SysUserResultMap_Detail">
+        SELECT
+        *,
+        <choose>
+            <when test="roleStatus != null and roleStatus != ''" >
+                ${roleStatus} as roleStatus
+            </when>
+            <otherwise>
+                '' as roleStatus
+            </otherwise>
+        </choose>
+
+        FROM  SYS_USER
+        <where>
+
+            <if test="sid != null and sid != ''">
+                and sid = #{sid}
+            </if>
+
+        </where>
+
+    </select>
+
+    <!-- 用户角色查询 -->
+    <select id="loadSysAccount" resultType="com.river.api.entity.system.SysAccount">
+		SELECT
+		*,
+		password as oldPassword
+		FROM  sys_account
+		where user_cd = #{value}
+	</select>
+
+</mapper>
